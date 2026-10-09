@@ -5,7 +5,7 @@ using NHance.Assets.Scripts.Enums;
 using NHance.Assets.Scripts.Items;
 using UnityEngine;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>One choice of a look: which item sits in an item type slot (hair, chest, skin...).</summary>
     [Serializable]

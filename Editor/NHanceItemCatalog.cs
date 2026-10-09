@@ -6,7 +6,7 @@ using NHance.Assets.Scripts.Items;
 using NHance.Assets.Scripts.Utils;
 using UnityEngine;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>What an item prefab's name says: race, gender, clothing style and color ("Hu_F_Chest_Peasant_01_Rd").</summary>
     internal readonly struct NHanceItemInfo

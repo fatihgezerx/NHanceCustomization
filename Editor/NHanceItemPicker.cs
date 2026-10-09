@@ -6,7 +6,7 @@ using NHance.Assets.Scripts.Items;
 using UnityEditor;
 using UnityEngine;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>
     /// Picks an item of one slot from a grid of thumbnails. A normal window: it can be resized and docked, the

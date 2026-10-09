@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>
     /// A small 3D view of a look: a copy of the look's preview character, dressed with it, in a private preview

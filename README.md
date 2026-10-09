@@ -1,4 +1,4 @@
-# NHanceLook
+# NHanceCustomization
 
 Describe an N-Hance character’s look in a ScriptableObject: random or hand-picked outfits by style, with a 3D preview and one-call dressing at runtime.
 
@@ -7,6 +7,8 @@ Describe an N-Hance character’s look in a ScriptableObject: random or hand-pic
 A **Character Look** is an asset that holds how one N-Hance Stylized Character looks: its race and gender and one item per slot (skin, hair, eyes, chest, boots, cape...). The Inspector rolls a new look at the press of a button or lets you pick every item by hand, and shows the result on a 3D preview of the character as you go. At run time `NHanceLookApplier` puts the look on a character.
 
 Random builds the outfit the way N-Hance's own presets are made: **one style, one color**, so the pieces always belong together, and it never gives a character holes, a bald head or a helmet that hides the hair (unless you ask for helmets).
+
+![Character Look inspector with the 3D preview and the item slots](ScreenShots/CostumuzationSS.png)
 
 ## Features
 
@@ -30,7 +32,7 @@ Random builds the outfit the way N-Hance's own presets are made: **one style, on
 
 ### Installation
 
-Copy the repository into your project's `Assets/` (e.g. `Assets/Scripts/NHanceLook`).
+Copy the repository into your project's `Assets/` (e.g. `Assets/Scripts/NHanceCustomization`).
 
 N-Hance has no assembly definition, so its code is in `Assembly-CSharp`, which a folder with an assembly definition cannot see. Keep this folder out of any folder that has an `.asmdef`, and do not add one to it.
 
@@ -51,7 +53,7 @@ applier.Apply();
 or, without the applier:
 
 ```csharp
-NHanceLook.NHanceLookRules.Apply(avatar, look);
+NHanceCustomization.NHanceLookRules.Apply(avatar, look);
 ```
 
 ## Notes

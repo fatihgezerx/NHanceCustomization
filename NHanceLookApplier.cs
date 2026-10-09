@@ -2,7 +2,7 @@ using CombatSystem;
 using NHance.Assets.Scripts;
 using UnityEngine;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>
     /// Dresses a character with an <see cref="NHanceLookData"/>. Put it on the fighter (or a child) whose model
@@ -44,7 +44,7 @@ namespace NHanceLook
 
             if (_avatar == null)
             {
-                Debug.LogError($"[NHanceLook] '{name}' has no NHAvatar on it or under it, so '{_look.name}' cannot be applied.", this);
+                Debug.LogError($"[NHanceCustomization] '{name}' has no NHAvatar on it or under it, so '{_look.name}' cannot be applied.", this);
                 return;
             }
 

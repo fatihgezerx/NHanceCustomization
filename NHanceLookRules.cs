@@ -4,7 +4,7 @@ using NHance.Assets.Scripts.Enums;
 using NHance.Assets.Scripts.Utils;
 using UnityEngine;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>What belongs to a look, and how a look is put on an N-Hance avatar.</summary>
     public static class NHanceLookRules
@@ -86,7 +86,7 @@ namespace NHanceLook
 
             if (avatar.Gender != look.Gender)
             {
-                Debug.LogWarning($"[NHanceLook] '{look.name}' is a {look.Gender} look but '{avatar.name}' is set up as {avatar.Gender}.", avatar);
+                Debug.LogWarning($"[NHanceCustomization] '{look.name}' is a {look.Gender} look but '{avatar.name}' is set up as {avatar.Gender}.", avatar);
             }
 
             for (var i = 0; i < Types.Length; i++)

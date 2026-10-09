@@ -5,7 +5,7 @@ using NHance.Assets.Scripts.Items;
 using UnityEditor;
 using UnityEngine;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>The Inspector of a look: race and gender, style, a 3D preview, the Random button and one row per slot.</summary>
     [CustomEditor(typeof(NHanceLookData))]

@@ -5,7 +5,7 @@ using NHance.Assets.Scripts.Enums;
 using NHance.Assets.Scripts.Items;
 using Random = UnityEngine.Random;
 
-namespace NHanceLook
+namespace NHanceCustomization
 {
     /// <summary>
     /// Fills the unlocked slots of a look with random items that fit its race and gender. The general slots (skin, hair,
@@ -259,7 +259,7 @@ namespace NHanceLook
             if (missing.Count > 0)
             {
                 UnityEngine.Debug.LogWarning(
-                    $"[NHanceLook] '{look.name}' ({look.Gender}): the project has no {string.Join(", ", missing)} items for this race and gender, so those slots stay empty.", look);
+                    $"[NHanceCustomization] '{look.name}' ({look.Gender}): the project has no {string.Join(", ", missing)} items for this race and gender, so those slots stay empty.", look);
             }
         }
 
