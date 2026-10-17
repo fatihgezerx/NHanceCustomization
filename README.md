@@ -24,11 +24,13 @@ Random builds the outfit the way N-Hance's own presets are made: **one style, on
 
 ## In the editor
 
-With the optional **Veneer** installed, a Character Look gets the studio look. A header card shows the asset name and a pill with the number of filled slots (or a warning when the Preview Base does not match the race and gender). The 3D preview sits under it and stays visible on every tab. Three tabs follow:
+With the optional **Veneer** installed, a Character Look gets the studio look. A header card shows the title "Character look" and a pill with the number of filled slots (or a warning when the Preview Base does not match the race and gender). The 3D preview sits under it and stays visible on every tab. Three tabs follow:
 
 - **Items**: a *Randomize* card with the Style menu and the **Random** and **Clear** buttons, then one card each for Skin, Head and Armor with one row per slot: the chosen item (click to show the prefab, drop an item of that slot on it), a picker, roll-again, clear and a lock.
 - **Character**: Race & Gender and the Preview Base, with the same reset rules as before.
 - **Random**: the optional chance, the Random Helmets switch and **Refresh items**.
+
+The Inspector is drawn from a default layout that the system ships (`NHanceLookDataDefaultLayout`) and can be customised in `Tools > Veneer > Inspector Designer` with Customize / Reset. The system's own items (state pill, 3D preview, Style menu, Random and Clear, slot rows, Refresh items) can be moved or hidden there but not changed.
 
 The item picker is a studio window (title bar, search box, size slider, thumbnails); the thumbnail grid and the 3D preview are still IMGUI areas inside the new shell. The studio look needs Veneer; without it the Inspector and the picker fall back to the plain IMGUI versions that have the same features. `Editor/Setup` holds a tiny reference-free assembly with a dependency guard that detects the kit, sets `HAS_VENEER` and offers to download it. N-Hance has no assembly definition, so the editor code stays in the project's editor assembly and is switched by `#if HAS_VENEER`.
 

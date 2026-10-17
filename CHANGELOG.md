@@ -3,6 +3,10 @@
 ## [Unreleased]
 
 ### Editor
+- The Character Look Inspector is now drawn from a Veneer default layout (`NHanceLookDataDefaultLayout`, items in `NHanceLookDataItems`),
+  customisable in the Inspector Designer. Same tabs, cards and behaviour; the header title is the fixed text "Character look" (it was the
+  asset name), the two hints under the Character and Random cards now sit inside those cards, and Undo / Redo changes are picked up by a
+  200 ms poll instead of an Undo callback. The item picker is unchanged.
 - New studio-look Character Look Inspector (Veneer): header card with an item-count / base-mismatch pill, the 3D preview
   (the existing IMGUI preview in an `IMGUIContainer`, always visible), and tabs **Items** (Style, Random, Clear, Skin / Head / Armor
   slot cards with item box, picker, roll, clear and lock), **Character** (Race & Gender, Preview Base) and **Random** (optional chance,
