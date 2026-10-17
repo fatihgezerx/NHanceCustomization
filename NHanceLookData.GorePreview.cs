@@ -1,4 +1,4 @@
-#if HAS_GORE_SIMULATOR
+#if HAS_GORE_LAB
 using System.Collections.Generic;
 using System.Linq;
 using NHance.Assets.Scripts;
@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace NHanceCustomization
 {
-    // What the Gore Simulator's studio needs to show a character dressed with this look as it looks in the game: the skins on the naked body, the skin
+    // What the GoreLab's studio needs to show a character dressed with this look as it looks in the game: the skins on the naked body, the skin
     // materials on the clothes and the naked parts the clothes hide. The studio puts the clothes on by tying their bones to the skeleton only; the
     // rest is what NHAvatar.Compile does, repeated here from the avatar's public data (the avatar's own code is not changed).
-    public sealed partial class NHanceLookData : GoreSimulator.IGoreLookPreview
+    public sealed partial class NHanceLookData : GoreLab.IGoreLookPreview
     {
         /// <summary>Puts the look's skins on the naked body of <paramref name="character"/>, then does for every worn item what the avatar does when it is dressed.</summary>
         public void PreparePreview(GameObject character, IReadOnlyList<GameObject> items, ICollection<Renderer> hidden)

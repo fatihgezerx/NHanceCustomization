@@ -67,12 +67,12 @@ namespace NHanceCustomization
             }
 
             NHanceLookRules.Apply(_avatar, _look);
-#if HAS_GORE_SIMULATOR
-            // A character that can be cut looks at what it wears now: the Gore Simulator cuts the worn pieces too.
-            var gore = GetComponentInChildren<GoreSimulator.GoreCharacter>(true);
+#if HAS_GORE_LAB
+            // A character that can be cut looks at what it wears now: the GoreLab cuts the worn pieces too.
+            var gore = GetComponentInChildren<GoreLab.GoreCharacter>(true);
             if (gore == null)
             {
-                gore = GetComponentInParent<GoreSimulator.GoreCharacter>(true);
+                gore = GetComponentInParent<GoreLab.GoreCharacter>(true);
             }
 
             if (gore != null)

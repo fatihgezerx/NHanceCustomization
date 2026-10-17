@@ -15,9 +15,9 @@ namespace NHanceCustomization
         public ItemTypeEnum Type;
 
         /// <summary>The item prefab; null means nothing in this slot.</summary>
-#if HAS_GORE_SIMULATOR
-        // Tells the Gore Simulator's studio that this is something a character wears: drop a look in its Worn equipment card and it finds the meshes.
-        [GoreSimulator.GoreWorn]
+#if HAS_GORE_LAB
+        // Tells the GoreLab's studio that this is something a character wears: drop a look in its Worn equipment card and it finds the meshes.
+        [GoreLab.GoreWorn]
 #endif
         public NHItem Item;
 
