@@ -14,7 +14,7 @@ namespace NHanceCustomization
     /// </summary>
     internal sealed class NHanceLookPreview : IDisposable
     {
-        private const float Height = 380f;
+        internal const float Height = 380f;
         private const float DragSpeed = 0.8f;
         private const float Pitch = 8f;
         private const float FieldOfView = 30f;

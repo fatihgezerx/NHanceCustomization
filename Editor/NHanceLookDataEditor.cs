@@ -1,3 +1,4 @@
+#if !HAS_VENEER
 using System.Collections.Generic;
 using NHance.Assets.Scripts;
 using NHance.Assets.Scripts.Enums;
@@ -346,3 +347,4 @@ namespace NHanceCustomization
         }
     }
 }
+#endif

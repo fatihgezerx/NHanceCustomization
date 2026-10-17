@@ -1,3 +1,4 @@
+#if !HAS_VENEER
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -227,3 +228,4 @@ namespace NHanceCustomization
         }
     }
 }
+#endif

@@ -15,6 +15,10 @@ namespace NHanceCustomization
         public ItemTypeEnum Type;
 
         /// <summary>The item prefab; null means nothing in this slot.</summary>
+#if HAS_GORE_SIMULATOR
+        // Tells the Gore Simulator's studio that this is something a character wears: drop a look in its Worn equipment card and it finds the meshes.
+        [GoreSimulator.GoreWorn]
+#endif
         public NHItem Item;
 
         /// <summary>Kept as it is by the Random button of the editor.</summary>
@@ -26,7 +30,7 @@ namespace NHanceCustomization
     /// <see cref="NHanceLookApplier"/> puts them on a character. Weapons and shields are not part of a look.
     /// </summary>
     [CreateAssetMenu(fileName = "NewLook", menuName = "N-Hance/Character Look")]
-    public sealed class NHanceLookData : ScriptableObject
+    public sealed partial class NHanceLookData : ScriptableObject
     {
         /// <summary>Race and gender; only items that fit it are offered and rolled.</summary>
         public Gender Gender;

@@ -1,0 +1,101 @@
+/*
+ * N-Hance Customization - brand and Character Look Inspector styles, added on top of the Veneer sheet.
+ *
+ * The accent is the exact lime (#7CB342). The brand passes the class "nhance-accent" as its accent class, so the kit adds no
+ * accent preset of its own and these rules are the only ones that set the accent variables.
+ * The rest styles the slot rows of the Inspector and the preview frame. Spacing is margins only (no gap in USS).
+ */
+
+.vn-root.nhance-accent {
+    --vn-accent: #7CB342;
+    --vn-accent-soft: rgba(124, 179, 66, 0.16);
+    --vn-accent-line: rgba(124, 179, 66, 0.55);
+    --vn-pressed: rgba(124, 179, 66, 0.24);
+}
+
+.vn-root.vn-root--light.nhance-accent {
+    --vn-accent: #5E8E2F;
+    --vn-accent-soft: rgba(94, 142, 47, 0.14);
+    --vn-accent-line: rgba(94, 142, 47, 0.60);
+    --vn-pressed: rgba(94, 142, 47, 0.22);
+}
+
+/* ------------------------------------------------------------------ preview frame */
+
+.nh-preview {
+    flex-shrink: 0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ slot row */
+
+.nh-slot {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 4px 0;
+}
+
+.nh-slot > .vn-icon-button {
+    margin-left: 3px;
+    flex-shrink: 0;
+}
+
+.nh-slot__label {
+    width: 96px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: var(--vn-text);
+}
+
+.nh-item {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    height: 24px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 8px;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: var(--vn-card-border);
+    background-color: var(--vn-track);
+}
+
+.nh-item:hover {
+    border-color: var(--vn-accent-line);
+}
+
+.nh-item__text {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--vn-text);
+}
+
+.nh-item--empty > .nh-item__text {
+    color: var(--vn-text-muted);
+}
+
+.nh-item--broken {
+    border-color: var(--vn-warn);
+}
+
+.nh-item--broken > .nh-item__text {
+    color: var(--vn-warn);
+}
+
+.nh-item--drop {
+    border-color: var(--vn-accent);
+    background-color: var(--vn-accent-soft);
+}
+
+.nh-group-hint {
+    margin-top: 2px;
+}
