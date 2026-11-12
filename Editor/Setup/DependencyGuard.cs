@@ -62,10 +62,10 @@ namespace NHanceCustomization.Setup
         {
             // N-Hance Customization itself is being deleted: clear its own symbol. The kit's symbol is shared with other systems'
             // assemblies (their Define Constraints), so it is set to what is actually installed now - never cleared
-            // blindly. Also forget an earlier "Not now", so a fresh copy asks again.
+            // blindly. Also forget an earlier "Not now", so a copy added later asks again.
             if (ContainsFile(deleted, SetupAsmdefFile))
             {
-                SessionState.EraseString(DeclinedKey);
+                EditorPrefs.DeleteKey(DeclinedPrefKey);
                 var symbols = new Dictionary<string, bool> { [OwnDefine] = false };
                 var assemblies = FindAssemblyDefinitions();
                 foreach (var dependency in Dependencies)
@@ -75,12 +75,6 @@ namespace NHanceCustomization.Setup
 
                 ApplyDefines(symbols);
                 return;
-            }
-
-            // Imported again (e.g. a newer copy): ask again too.
-            if (ContainsFile(imported, SetupAsmdefFile))
-            {
-                SessionState.EraseString(DeclinedKey);
             }
 
             if (ContainsAsmdef(imported) || ContainsAsmdef(deleted) || ContainsAsmdef(moved))
@@ -121,8 +115,9 @@ namespace NHanceCustomization.Setup
                 return false;
             }
 
-            // Asked whenever something is missing, unless "Not now" was already picked for all of it in
-            // this editor session (a dependency that goes missing later is asked about again).
+            // Asked whenever something is missing, unless "Not now" was already picked for all of it in this project
+            // (remembered across editor sessions; a dependency that goes missing later is asked about again).
+            // Tools > N-Hance Customization > Install Optional Dependencies... asks again on demand.
             if (prompt && Downloads.Count == 0 && !Application.isBatchMode && !WasDeclined(missing))
             {
                 Prompt(missing);
@@ -182,7 +177,36 @@ namespace NHanceCustomization.Setup
             }
         }
 
-        // Not asked about these again in this editor session (see WasDeclined).
+        // "Not now" is remembered per project and per machine (EditorPrefs, keyed by the project's path), so the question is asked once,
+        // not on every editor start.
+        private static string DeclinedPrefKey => DeclinedKey + ":" + Application.dataPath;
+
+        [MenuItem("Tools/N-Hance Customization/Install Optional Dependencies...")]
+        private static void InstallFromMenu()
+        {
+            var assemblies = FindAssemblyDefinitions();
+            var missing = new List<Dependency>();
+            foreach (var dependency in Dependencies)
+            {
+                if (!assemblies.ContainsKey(dependency.Assembly))
+                {
+                    missing.Add(dependency);
+                }
+            }
+
+            if (missing.Count == 0)
+            {
+                EditorUtility.DisplayDialog(SystemName, "Every optional dependency is installed.", "OK");
+                return;
+            }
+
+            if (Downloads.Count == 0)
+            {
+                Prompt(missing);
+            }
+        }
+
+        // Not asked about these again in this project (see WasDeclined).
         private static void Decline(List<Dependency> dependencies)
         {
             var names = new List<string>();
@@ -191,12 +215,12 @@ namespace NHanceCustomization.Setup
                 names.Add(dependency.Name);
             }
 
-            SessionState.SetString(DeclinedKey, string.Join("\n", names));
+            EditorPrefs.SetString(DeclinedPrefKey, string.Join("\n", names));
         }
 
         private static bool WasDeclined(List<Dependency> missing)
         {
-            var declined = new HashSet<string>(SessionState.GetString(DeclinedKey, string.Empty).Split('\n'));
+            var declined = new HashSet<string>(EditorPrefs.GetString(DeclinedPrefKey, string.Empty).Split('\n'));
             foreach (var dependency in missing)
             {
                 if (!declined.Contains(dependency.Name))

@@ -24,8 +24,10 @@ namespace NHanceCustomization
         private readonly VisualElement root;
         private readonly List<Action> refreshers = new List<Action>(8);
 
-        private NHanceLookPreview preview;
-        private IMGUIContainer previewView;
+        private const float PreviewHeight = 380f;
+
+        private NHanceLookPreviewSource previewSource;
+        private VeneerModelPreview previewView;
         private int signature;
         private bool firstTick = true;
 
@@ -102,47 +104,34 @@ namespace NHanceCustomization
             {
                 refreshers[i]();
             }
+
+            // The source rebuilds the character only when the look really changed.
+            if (previewView != null)
+            {
+                previewView.Refresh();
+            }
         }
 
-        /// <summary>Makes the 3D preview (an IMGUI container: render texture, drag, wheel and view buttons have no UI Toolkit equivalent).</summary>
-        public VisualElement CreatePreview()
+        /// <summary>Makes the 3D preview: the kit's <see cref="VeneerModelPreview"/> fed by this look's <see cref="NHanceLookPreviewSource"/>.</summary>
+        public VisualElement CreatePreview(VeneerBrand brand)
         {
-            previewView = new IMGUIContainer(DrawPreview);
+            if (previewSource == null)
+            {
+                previewSource = new NHanceLookPreviewSource(Look);
+            }
+
+            previewView = new VeneerModelPreview(previewSource, null, brand);
             previewView.AddToClassList("nh-preview");
-            previewView.style.height = NHanceLookPreview.Height;
+            previewView.style.height = PreviewHeight;
             return previewView;
         }
 
-        private void DrawPreview()
-        {
-            if (Look == null)
-            {
-                return;
-            }
-
-            if (preview == null)
-            {
-                preview = new NHanceLookPreview();
-            }
-
-            preview.Draw(Look, RepaintPreview);
-        }
-
-        private void RepaintPreview()
-        {
-            if (previewView != null)
-            {
-                previewView.MarkDirtyRepaint();
-            }
-        }
-
-        // The preview owns a render utility and a scene: release them when the Inspector leaves the panel (it is made again when drawn).
+        // The source owns a render utility and a scene: release them when the Inspector leaves the panel (they are made again when drawn).
         private void OnDetached(DetachFromPanelEvent evt)
         {
-            if (preview != null)
+            if (previewSource != null)
             {
-                preview.Dispose();
-                preview = null;
+                previewSource.Dispose();
             }
         }
 

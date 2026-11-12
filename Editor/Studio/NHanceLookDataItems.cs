@@ -89,7 +89,7 @@ namespace NHanceCustomization
                 Id = PreviewId,
                 Label = "3D preview",
                 Icon = "eye",
-                Description = "The Preview card under the header: the look on a copy of the Preview Base character. Drag to turn, wheel to zoom.",
+                Description = "The Preview card under the header: the look on a copy of the Preview Base character (Veneer's model preview). Drag to turn, middle button to pan, wheel to zoom, Full / Head / Body / Legs to jump.",
                 Slot = VeneerCustomItemSlot.AfterHeader,
                 Build = BuildPreview,
             });
@@ -109,7 +109,7 @@ namespace NHanceCustomization
                 Id = StyleId,
                 Label = "Style",
                 Icon = "layers",
-                Description = "The clothing style Random builds the outfit from (a menu of the styles for the look's gender).",
+                Description = "The clothing style Random builds the outfit from (a dropdown of the styles for the look's gender).",
                 Slot = VeneerCustomItemSlot.Item,
                 Build = BuildStyle,
             });
@@ -195,8 +195,7 @@ namespace NHanceCustomization
             }
 
             VeneerInspectorBuilder b = context.Builder;
-            VisualElement view = session.CreatePreview();
-            session.AddRefresher(view.MarkDirtyRepaint);
+            VisualElement view = session.CreatePreview(context.Brand);
             b.Card("Preview", "eye", () => b.Add(view));
             return null;
         }
@@ -219,19 +218,35 @@ namespace NHanceCustomization
             }
 
             string tooltip = TooltipOf(context, StyleTooltip);
-            Button styleButton = null;
-            styleButton = VeneerStyle.Button(StyleText(session.Look), "chevron-down", tooltip, () => ShowStyleMenu(session, styleButton), false, context.Brand);
-            styleButton.style.flexGrow = 1f;
-            Label styleText = styleButton.Q<Label>(className: "vn-button__label");
-            session.AddRefresher(() =>
-            {
-                if (styleText != null)
-                {
-                    styleText.text = StyleText(session.Look);
-                }
-            });
 
-            return VeneerStyle.FieldRow(LabelOf(context, StyleLabel), styleButton, tooltip, out Label _);
+            // The kit's animated dropdown: "All" first, then the styles of the look's gender (index - 1 into the list kept below).
+            var styles = new List<string>(8);
+            var choices = new List<string>(9);
+            VeneerDropdownField dropdown = null;
+            dropdown = (VeneerDropdownField)VeneerDropdown.Create(choices, 0, index =>
+            {
+                if (index >= 0 && index < choices.Count)
+                {
+                    SetStyle(session, index == 0 ? string.Empty : styles[index - 1]);
+                }
+            }, context.Brand);
+            dropdown.style.flexGrow = 1f;
+
+            Action fill = () =>
+            {
+                NHanceLookData look = session.Look;
+                styles.Clear();
+                styles.AddRange(NHanceItemCatalog.StylesFor(look.Gender));
+                choices.Clear();
+                choices.Add(AllStyles);
+                choices.AddRange(styles);
+                int selected = string.IsNullOrEmpty(look.Style) ? 0 : styles.IndexOf(look.Style) + 1;
+                dropdown.SetChoices(choices, selected);
+            };
+
+            session.AddRefresher(fill);
+            fill();
+            return VeneerStyle.FieldRow(LabelOf(context, StyleLabel), dropdown, tooltip, out Label _);
         }
 
         private static VisualElement BuildActions(VeneerCustomItemContext context)
@@ -272,11 +287,6 @@ namespace NHanceCustomization
             return null;
         }
 
-        private static string StyleText(NHanceLookData look)
-        {
-            return string.IsNullOrEmpty(look.Style) ? AllStyles : look.Style;
-        }
-
         private static void ClearUnlocked(NHanceLookData look)
         {
             foreach (NHanceLookSlot slot in look.Slots)
@@ -286,21 +296,6 @@ namespace NHanceCustomization
                     slot.Item = null;
                 }
             }
-        }
-
-        private static void ShowStyleMenu(NHanceLookDataSession session, Button anchor)
-        {
-            NHanceLookData look = session.Look;
-            var menu = new GenericMenu();
-            menu.AddItem(new GUIContent(AllStyles), string.IsNullOrEmpty(look.Style), () => SetStyle(session, string.Empty));
-            menu.AddSeparator(string.Empty);
-            foreach (string style in NHanceItemCatalog.StylesFor(look.Gender))
-            {
-                string chosen = style;
-                menu.AddItem(new GUIContent(chosen), look.Style == chosen, () => SetStyle(session, chosen));
-            }
-
-            menu.DropDown(anchor.worldBound);
         }
 
         private static void SetStyle(NHanceLookDataSession session, string style)
@@ -318,9 +313,8 @@ namespace NHanceCustomization
                 return null;
             }
 
-            var field = new EnumField(session.Look.Gender);
-            field.RegisterValueChangedCallback(evt => OnGenderChanged(session, (Gender)evt.newValue));
-            session.AddRefresher(() => field.SetValueWithoutNotify(session.Look.Gender));
+            VeneerEnumDropdownField<Gender> field = VeneerDropdown.CreateEnum(session.Look.Gender, gender => OnGenderChanged(session, gender), context.Brand);
+            session.AddRefresher(() => field.EnumValue = session.Look.Gender);
             return VeneerStyle.FieldRow(LabelOf(context, GenderLabel), field, TooltipOf(context, GenderTooltip), out Label _);
         }
 

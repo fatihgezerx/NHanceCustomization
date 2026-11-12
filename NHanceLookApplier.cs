@@ -1,4 +1,6 @@
+#if HAS_COMBAT_SYSTEM
 using CombatSystem;
+#endif
 using NHance.Assets.Scripts;
 using UnityEngine;
 
@@ -8,9 +10,14 @@ namespace NHanceCustomization
     /// Dresses a character with an <see cref="NHanceLookData"/>. Put it on the fighter (or a child) whose model
     /// has the N-Hance <c>NHAvatar</c>; the fighter calls it when it is initialized, before it places its weapons. A character with no
     /// fighter (an NPC that only lives an occupation, say) is dressed by the applier itself when the scene starts.
+    /// Without Combat System (<c>HAS_COMBAT_SYSTEM</c> not defined) the applier always dresses the character itself in <c>Start</c>.
     /// </summary>
     [DisallowMultipleComponent]
+#if HAS_COMBAT_SYSTEM
     public sealed class NHanceLookApplier : MonoBehaviour, IFighterAppearance
+#else
+    public sealed class NHanceLookApplier : MonoBehaviour
+#endif
     {
         [SerializeField] private NHanceLookData _look;
 
@@ -37,14 +44,20 @@ namespace NHanceCustomization
         // A fighter dresses its character itself (ApplyAppearance); a character without one is dressed here.
         private void Start()
         {
+#if HAS_COMBAT_SYSTEM
             if (GetComponentInParent<Fighter>(true) == null && GetComponentInChildren<Fighter>(true) == null)
             {
                 Apply();
             }
+#else
+            Apply();
+#endif
         }
 
+#if HAS_COMBAT_SYSTEM
         /// <summary>Called by the fighter when it is initialized.</summary>
         public void ApplyAppearance(Fighter fighter) => Apply();
+#endif
 
         /// <summary>Dresses the character with <see cref="Look"/>. Does nothing when there is no look.</summary>
         public void Apply()
